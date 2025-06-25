@@ -95,7 +95,7 @@ class AdminController extends Controller
     public function destroyUser(User $user)
     {
         // Prevent deletion of admin user
-        if ($user->email === 'sidharththakur@gmail.com') {
+        if ($user->email === 'yamansharmarakta@gmail.com') {
             return redirect()->route('admin.users')->with('error', 'Cannot delete admin user');
         }
         

@@ -29,7 +29,7 @@
                         {{ __('Trip Planning') }}
                     </x-nav-link>
                     <!-- Only show Admin link for the admin user -->
-                    @if (Auth::check() && Auth::user()->email === 'sidharththakur@gmail.com')
+                    @if (Auth::check() && Auth::user()->email === 'yamansharmarakta@gmail.com')
                         <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin*')">
                             {{ __('Admin') }}
                         </x-nav-link>
