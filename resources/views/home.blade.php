@@ -801,56 +801,12 @@
             </div>
         </div>
         
-        <div class="mb-6">
-            <h3 class="text-xl font-semibold mb-3">About Iceland</h3>
-            <p class="text-gray-700 mb-4">
-                Iceland is a Nordic island country in the North Atlantic Ocean, with a population of 360,000. It's known for its dramatic landscapes, including volcanoes, geysers, hot springs, lava fields, and massive glaciers.
-            </p>
-            <p class="text-gray-700">
-                The country is composed of 17.8% of the total land area of Europe and is the 18th largest country in Europe by area, the 102nd largest
-            <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1504893524553-b855bce32c67?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1771&q=80" alt="Iceland">
-        </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <div class="bg-blue-50 p-4 rounded-lg">
-                <h3 class="font-semibold text-blue-800 mb-2">Best Time to Visit</h3>
-                <p class="text-gray-700">June to August (Summer), September to March (Northern Lights)</p>
-            </div>
-            <div class="bg-blue-50 p-4 rounded-lg">
-                <h3 class="font-semibold text-blue-800 mb-2">Language</h3>
-                <p class="text-gray-700">Icelandic</p>
-            </div>
-            <div class="bg-blue-50 p-4 rounded-lg">
-                <h3 class="font-semibold text-blue-800 mb-2">Currency</h3>
-                <p class="text-gray-700">Icelandic Króna (ISK)</p>
-            </div>
-        </div>
-        
-        <div class="mb-6">
-            <h3 class="text-xl font-semibold mb-3">Current Weather</h3>
-            <div id="iceland-weather" class="bg-blue-50 p-4 rounded-lg">
-                <div class="animate-pulse flex space-x-4">
-                    <div class="rounded-full bg-slate-200 h-10 w-10"></div>
-                    <div class="flex-1 space-y-6 py-1">
-                        <div class="h-2 bg-slate-200 rounded"></div>
-                        <div class="space-y-3">
-                            <div class="grid grid-cols-3 gap-4">
-                                <div class="h-2 bg-slate-200 rounded col-span-2"></div>
-                                <div class="h-2 bg-slate-200 rounded col-span-1"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         
         <div class="mb-6">
             <h3 class="text-xl font-semibold mb-3">About Iceland</h3>
             <p class="text-gray-700 mb-4">
-                Iceland is a Nordic island country in the North Atlantic Ocean, with a population of 360,000. It's known for its dramatic landscapes, including volcanoes, geysers, hot springs, and glaciers.
-            </p>
-            <p class="text-gray-700">
-                The country is home to the Northern Lights, which can be seen in the winter months, and it's a popular destination for hiking, skiing, and whale watching.
+                Iceland is a Nordic island country known for its dramatic landscapes including volcanoes, geysers, hot springs, and massive glaciers. Experience the magical Northern Lights and explore unique geological wonders.
             </p>
         </div>
         

@@ -1,8 +1,17 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Edit Trip:') }} {{ $trip->name }}
-        </h2>
+        <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('Edit Trip:') }} {{ $trip->name }}
+            </h2>
+            <form method="POST" action="{{ route('trips.destroy', $trip) }}" class="inline" onsubmit="return confirmDelete('{{ $trip->name }}')">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    {{ __('Delete Trip') }}
+                </button>
+            </form>
+        </div>
     </x-slot>
 
     <!-- Success Message -->
@@ -1103,6 +1112,11 @@ document.addEventListener('DOMContentLoaded', function() {
             transportation.push({ type, details, date });
         });
         return transportation;
+    }
+
+    // Delete confirmation function
+    function confirmDelete(tripName) {
+        return confirm(`Are you sure you want to delete the trip "${tripName}"? This action cannot be undone.`);
     }
 });
 </script>

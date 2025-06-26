@@ -96,11 +96,12 @@ class TripController extends Controller
     public function destroy(Trip $trip)
     {
         $this->authorize('delete', $trip);
-        
+
+        $tripName = $trip->name;
         $trip->delete();
-        
+
         return redirect()->route('trips.index')
-            ->with('success', 'Trip deleted successfully!');
+            ->with('success', "Trip '{$tripName}' has been deleted successfully!");
     }
 
     /**
@@ -251,9 +252,11 @@ class TripController extends Controller
     public function thankYou(Trip $trip)
     {
         $this->authorize('view', $trip);
-        
+
         return view('trips.thank-you', compact('trip'));
     }
+
+
 }
 
 

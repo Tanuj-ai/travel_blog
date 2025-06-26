@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +31,23 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         return redirect()->intended(route('dashboard', absolute: false));
+    }
+
+    /**
+     * Check if a user exists with the given email.
+     */
+    public function checkUser(Request $request): JsonResponse
+    {
+        $request->validate([
+            'email' => ['required', 'email'],
+        ]);
+
+        $userExists = User::where('email', $request->email)->exists();
+
+        return response()->json([
+            'exists' => $userExists,
+            'message' => $userExists ? 'User found' : 'You are a new user. You need to register first.',
+        ]);
     }
 
     /**

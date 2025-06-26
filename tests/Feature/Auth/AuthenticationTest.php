@@ -42,6 +42,44 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
     }
 
+    public function test_check_user_returns_true_for_existing_user(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->post('/check-user', [
+            'email' => $user->email,
+        ]);
+
+        $response->assertStatus(200)
+                ->assertJson([
+                    'exists' => true,
+                    'message' => 'User found',
+                ]);
+    }
+
+    public function test_check_user_returns_false_for_new_user(): void
+    {
+        $response = $this->post('/check-user', [
+            'email' => 'newuser@example.com',
+        ]);
+
+        $response->assertStatus(200)
+                ->assertJson([
+                    'exists' => false,
+                    'message' => 'You are a new user. You need to register first.',
+                ]);
+    }
+
+    public function test_check_user_validates_email_format(): void
+    {
+        $response = $this->post('/check-user', [
+            'email' => 'invalid-email',
+        ]);
+
+        $response->assertStatus(422)
+                ->assertJsonValidationErrors(['email']);
+    }
+
     public function test_users_can_logout(): void
     {
         $user = User::factory()->create();

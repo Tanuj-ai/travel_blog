@@ -33,4 +33,16 @@ class TripPolicy
     {
         return $user->id === $trip->user_id;
     }
+
+    /**
+     * Determine whether the user can delete the trip.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Trip  $trip
+     * @return bool
+     */
+    public function delete(User $user, Trip $trip)
+    {
+        return $user->id === $trip->user_id;
+    }
 }
