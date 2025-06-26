@@ -4,8 +4,18 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 @if($post->featured_image)
                     <div class="h-80 overflow-hidden">
-                        <img src="{{ Storage::url($post->featured_image) }}" alt="{{ $post->title }}" 
+                        <img src="{{ asset('storage/' . $post->featured_image) }}" 
+                             alt="{{ $post->title }}" 
                              class="w-full h-full object-cover">
+                    </div>
+                @else
+                    <div class="h-80 overflow-hidden bg-gray-200 flex items-center justify-center">
+                        <div class="text-gray-400 text-center p-4">
+                            <svg class="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            <p>No image</p>
+                        </div>
                     </div>
                 @endif
                 
@@ -64,3 +74,6 @@
         </div>
     </div>
 </x-app-layout>
+
+
+

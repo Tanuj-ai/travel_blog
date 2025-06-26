@@ -15,10 +15,19 @@ class PostController extends Controller
      */
     public function index()
     {
+        // Get published posts, ordered by published date
         $posts = Post::where('status', 'published')
-            ->orderBy('published_at', 'desc')
-            ->paginate(10);
-            
+                    ->orderBy('published_at', 'desc')
+                    ->orWhere(function($query) {
+                        // If user is logged in, also show their draft posts
+                        if (Auth::check()) {
+                            $query->where('status', 'draft')
+                                  ->where('user_id', Auth::id());
+                        }
+                    })
+                    ->with('user')  // Eager load the user relationship
+                    ->paginate(9);  // Show 9 posts per page for a clean 3x3 grid
+        
         return view('posts.index', compact('posts'));
     }
 
@@ -37,5 +46,7 @@ class PostController extends Controller
         return view('posts.show', compact('post', 'isOwner'));
     }
 }
+
+
 
 

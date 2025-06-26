@@ -118,5 +118,24 @@ Route::get('trips/{trip}', [App\Http\Controllers\TripController::class, 'show'])
     ->name('trips.show')
     ->middleware(['auth']);
 
+// Blog image routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/blog-images', [App\Http\Controllers\BlogImageController::class, 'index'])->name('admin.blog-images');
+    Route::post('/admin/blog-images/assign', [App\Http\Controllers\BlogImageController::class, 'assignToPost'])->name('admin.blog-images.assign');
+    Route::get('/admin/blog-images/random/{postId}', [App\Http\Controllers\BlogImageController::class, 'getRandomImageForPost'])->name('admin.blog-images.random');
+    Route::post('/admin/blog-images/remove-all', [App\Http\Controllers\BlogImageController::class, 'removeAllImages'])->name('admin.blog-images.remove-all');
+});
+
+// Only in local/development environment
+if (app()->environment(['local', 'development'])) {
+    Route::get('/fix-all-post-images', [App\Http\Controllers\BlogImageController::class, 'fixAllPostImages']);
+}
+
+// Only in local environment
+if (app()->environment('local')) {
+    Route::get('/fix-images', [App\Http\Controllers\ImageFixController::class, 'fixImages']);
+}
+
+
 
 

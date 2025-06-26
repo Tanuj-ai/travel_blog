@@ -1,0 +1,46 @@
+/* Blog-specific styles */
+.blog-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.blog-card:hover {
+    transform: translateY(-5px);
+}
+
+.blog-image {
+    transition: transform 0.5s ease;
+}
+
+.blog-card:hover .blog-image {
+    transform: scale(1.05);
+}
+
+/* Ensure proper line clamping */
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Custom pagination styling */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.pagination > * {
+    margin: 0 0.25rem;
+}
+
+/* Ensure proper spacing in mobile views */
+@media (max-width: 640px) {
+    .blog-hero h1 {
+        font-size: 2rem;
+    }
+    
+    .blog-hero p {
+        font-size: 1rem;
+    }
+}

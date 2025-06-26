@@ -40,13 +40,42 @@
                             @if($post->featured_image)
                                 <div class="mt-2 mb-4">
                                     <p class="text-sm text-gray-600 mb-2">Current image:</p>
-                                    <img src="{{ Storage::url($post->featured_image) }}" alt="{{ $post->title }}" class="w-64 h-auto rounded">
+                                    <img src="{{ asset($post->featured_image) }}" 
+                                         alt="{{ $post->title }}" 
+                                         class="w-64 h-auto rounded"
+                                         onerror="this.src='{{ asset('images/default-featured.jpg') }}'; this.onerror=null;">
                                 </div>
                             @endif
                             
-                            <input id="featured_image" name="featured_image" type="file" accept="image/*" 
-                                  class="mt-1 block w-full" />
-                            <p class="mt-1 text-sm text-gray-500">Recommended size: 1200x800 pixels. Leave empty to keep current image.</p>
+                            <div class="mt-2">
+                                <div class="flex flex-col space-y-2">
+                                    <div>
+                                        <input id="featured_image" name="featured_image" type="file" accept="image/*" 
+                                              class="mt-1 block w-full" />
+                                        <p class="mt-1 text-sm text-gray-500">Upload a new image (recommended size: 1200x800 pixels)</p>
+                                    </div>
+                                    
+                                    <div class="mt-4">
+                                        <p class="text-sm text-gray-600 mb-2">Or select from blog images:</p>
+                                        <div class="flex items-center">
+                                            <input type="text" id="image_path" name="image_path" 
+                                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                   placeholder="Image path (e.g., images/blog/travel/travel-1.jpg)" />
+                                            <a href="{{ route('admin.blog-images') }}" target="_blank" class="ml-2 text-blue-600 hover:text-blue-800">
+                                                Browse
+                                            </a>
+                                        </div>
+                                        <p class="mt-1 text-sm text-gray-500">Leave both empty to keep current image</p>
+                                    </div>
+                                    
+                                    <div class="mt-2">
+                                        <button type="button" id="getRandomImage" class="text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-1 px-3 rounded">
+                                            Get Random Image
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
                             <x-input-error :messages="$errors->get('featured_image')" class="mt-2" />
                         </div>
                         
@@ -82,3 +111,48 @@
         </div>
     </div>
 </x-app-layout>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const getRandomImageButton = document.getElementById('getRandomImage');
+        const imagePathInput = document.getElementById('image_path');
+        
+        if (getRandomImageButton && imagePathInput) {
+            getRandomImageButton.addEventListener('click', function() {
+                const postId = {{ $post->id }};
+                
+                // Show loading state
+                getRandomImageButton.textContent = 'Loading...';
+                getRandomImageButton.disabled = true;
+                
+                // Make AJAX request to get random image
+                fetch(`/admin/blog-images/random/${postId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            imagePathInput.value = data.image_path;
+                            // Update preview image if it exists
+                            const previewImg = document.querySelector('img[alt="{{ $post->title }}"]');
+                            if (previewImg) {
+                                previewImg.src = '/' + data.image_path;
+                            }
+                        } else {
+                            alert('Error: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred while getting a random image');
+                    })
+                    .finally(() => {
+                        // Reset button state
+                        getRandomImageButton.textContent = 'Get Random Image';
+                        getRandomImageButton.disabled = false;
+                    });
+            });
+        }
+    });
+</script>
+
+
+

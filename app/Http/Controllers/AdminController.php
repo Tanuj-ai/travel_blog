@@ -212,25 +212,23 @@ class AdminController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'content' => 'required|string',
+            'slug' => 'required|string|max:255|unique:posts,slug,' . $post->id,
             'excerpt' => 'nullable|string',
-            'featured_image' => 'nullable|image|max:2048',
-            'status' => 'required|in:draft,published',
-            'hashtags' => 'nullable|string|max:255',
+            'content' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+            'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_path' => 'nullable|string',
+            'status' => 'required|in:draft,published'
         ]);
         
         $post->title = $validated['title'];
-        $post->excerpt = $validated['excerpt'] ?? null;
+        $post->slug = $validated['slug'];
+        $post->excerpt = $validated['excerpt'];
         $post->content = $validated['content'];
-        $post->hashtags = $validated['hashtags'] ?? null;
-        
-        // Update published_at if status changes to published
-        if ($validated['status'] === 'published' && $post->status !== 'published') {
-            $post->published_at = now();
-        }
-        
+        $post->category_id = $validated['category_id'];
         $post->status = $validated['status'];
         
+        // Handle image upload
         if ($request->hasFile('featured_image')) {
             // Delete old image if exists
             if ($post->featured_image) {
@@ -239,6 +237,10 @@ class AdminController extends Controller
             
             $path = $request->file('featured_image')->store('posts', 'public');
             $post->featured_image = $path;
+        } 
+        // Handle image path from blog images
+        elseif ($request->filled('image_path')) {
+            $post->featured_image = $validated['image_path'];
         }
         
         $post->save();
@@ -269,6 +271,7 @@ class AdminController extends Controller
         return view('admin.destinations');
     }
 }
+
 
 
 

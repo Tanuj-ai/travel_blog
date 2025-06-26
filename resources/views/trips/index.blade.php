@@ -27,7 +27,7 @@
                             <div class="relative h-32 overflow-hidden bg-gradient-to-br {{ $trip->getDestinationGradient() }}">
                                 <!-- Background Image -->
                                 <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                                     style="background-image: url('{{ $trip->getDestinationImageUrl() }}');">
+                                     style="background-image: url('{{ $trip->getDestinationImageUrl() }}'); background-color: rgba(0,0,0,0.2);">
                                 </div>
                                 <!-- Gradient Overlay for better text readability -->
                                 <div class="absolute inset-0 bg-gradient-to-br from-black/50 via-black/30 to-black/60"></div>
@@ -224,3 +224,4 @@
         });
     </script>
 </x-app-layout>
+

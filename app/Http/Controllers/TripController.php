@@ -9,6 +9,21 @@ use Illuminate\Support\Facades\Http;
 
 class TripController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index', 'getWeather']);
+        
+        // Ensure destination images directory exists
+        if (!file_exists(public_path('images/destinations'))) {
+            mkdir(public_path('images/destinations'), 0755, true);
+        }
+    }
+
     public function index()
     {
         $trips = Auth::user()->trips()->latest()->get();
@@ -258,6 +273,7 @@ class TripController extends Controller
 
 
 }
+
 
 
 
