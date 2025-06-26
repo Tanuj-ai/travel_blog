@@ -31,7 +31,11 @@ class PostController extends Controller
             abort(404);
         }
         
-        return view('posts.show', compact('post'));
+        // Check if the current user is the owner of the post
+        $isOwner = Auth::check() && Auth::id() === $post->user_id;
+        
+        return view('posts.show', compact('post', 'isOwner'));
     }
 }
+
 

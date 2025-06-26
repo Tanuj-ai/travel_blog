@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <form action="{{ route('admin.posts.store') }}" method="POST" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('admin.posts.store') }}" enctype="multipart/form-data">
                         @csrf
                         
                         <div class="mb-4">
@@ -21,30 +21,44 @@
                         
                         <div class="mb-4">
                             <x-input-label for="excerpt" :value="__('Excerpt')" />
-                            <textarea id="excerpt" name="excerpt" rows="3" 
-                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">{{ old('excerpt') }}</textarea>
+                            <x-text-input id="excerpt" name="excerpt" type="text" class="mt-1 block w-full" 
+                                         :value="old('excerpt')" />
+                            <p class="mt-1 text-sm text-gray-500">A short summary of your post</p>
                             <x-input-error :messages="$errors->get('excerpt')" class="mt-2" />
                         </div>
                         
                         <div class="mb-4">
                             <x-input-label for="content" :value="__('Content')" />
                             <textarea id="content" name="content" rows="10" 
-                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>{{ old('content') }}</textarea>
+                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
+                                     required>{{ old('content') }}</textarea>
                             <x-input-error :messages="$errors->get('content')" class="mt-2" />
                         </div>
                         
                         <div class="mb-4">
+                            <x-input-label for="hashtags" :value="__('Hashtags')" />
+                            <x-text-input id="hashtags" name="hashtags" type="text" class="mt-1 block w-full" 
+                                         :value="old('hashtags')" placeholder="travel, adventure, bali" />
+                            <p class="mt-1 text-sm text-gray-500">Separate hashtags with commas</p>
+                            <x-input-error :messages="$errors->get('hashtags')" class="mt-2" />
+                        </div>
+                        
+                        <div class="mb-4">
                             <x-input-label for="featured_image" :value="__('Featured Image')" />
-                            <input id="featured_image" name="featured_image" type="file" accept="image/*" 
-                                  class="mt-1 block w-full" />
-                            <p class="mt-1 text-sm text-gray-500">Recommended size: 1200x800 pixels</p>
+                            <input id="featured_image" name="featured_image" type="file" 
+                                  class="mt-1 block w-full text-sm text-gray-500
+                                         file:mr-4 file:py-2 file:px-4
+                                         file:rounded-md file:border-0
+                                         file:text-sm file:font-semibold
+                                         file:bg-indigo-50 file:text-indigo-700
+                                         hover:file:bg-indigo-100" />
                             <x-input-error :messages="$errors->get('featured_image')" class="mt-2" />
                         </div>
                         
                         <div class="mb-4">
                             <x-input-label for="status" :value="__('Status')" />
                             <select id="status" name="status" 
-                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
+                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                                 <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>Draft</option>
                                 <option value="published" {{ old('status') == 'published' ? 'selected' : '' }}>Published</option>
                             </select>
@@ -65,3 +79,4 @@
         </div>
     </div>
 </x-app-layout>
+

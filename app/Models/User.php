@@ -49,10 +49,28 @@ class User extends Authenticatable
      */
     public function trips()
     {
-        return $this->hasMany(Trip::class);
+        return $this->hasMany(\App\Models\Trip::class);
+    }
+
+    /**
+     * Get the posts for the user.
+     */
+    public function posts()
+    {
+        return $this->hasMany(\App\Models\Post::class);
+    }
+
+    /**
+     * Check if the user has the given role.
+     *
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole(string $role): bool
+    {
+        return $this->role === $role;
     }
 }
-
 
 
 

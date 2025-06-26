@@ -19,9 +19,9 @@ Route::get('/', function () {
 Route::get('/destinations', [DestinationController::class, 'index'])->name('destinations');
 
 // Dashboard route
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -38,27 +38,24 @@ Route::get('/about', [AboutController::class, 'index'])->name('about');
 
 require __DIR__.'/auth.php';
 
-// Admin routes with admin middleware
-Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
-    Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::get('/test', [AdminController::class, 'test'])->name('admin.test');
+// Public post routes
+Route::get('/blog', [PostController::class, 'index'])->name('posts.index');
+Route::get('/blog/{post:slug}', [PostController::class, 'show'])->name('posts.show');
+
+// Admin routes
+Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    
+    // Posts management
+    Route::get('/posts', [AdminController::class, 'posts'])->name('posts');
+    Route::get('/posts/create', [AdminController::class, 'createPost'])->name('posts.create');
+    Route::post('/posts', [AdminController::class, 'storePost'])->name('posts.store');
+    Route::get('/posts/{post}/edit', [AdminController::class, 'editPost'])->name('posts.edit');
+    Route::put('/posts/{post}', [AdminController::class, 'updatePost'])->name('posts.update');
+    Route::delete('/posts/{post}', [AdminController::class, 'destroyPost'])->name('posts.destroy');
     
     // User management
-    Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
-    Route::get('/users/{user}/edit', [AdminController::class, 'editUser'])->name('admin.users.edit');
-    Route::put('/users/{user}', [AdminController::class, 'updateUser'])->name('admin.users.update');
-    Route::delete('/users/{user}', [AdminController::class, 'destroyUser'])->name('admin.users.destroy');
-    
-    // Post management
-    Route::get('/posts', [AdminController::class, 'posts'])->name('admin.posts');
-    Route::get('/posts/create', [AdminController::class, 'createPost'])->name('admin.posts.create');
-    Route::post('/posts', [AdminController::class, 'storePost'])->name('admin.posts.store');
-    Route::get('/posts/{post}/edit', [AdminController::class, 'editPost'])->name('admin.posts.edit');
-    Route::put('/posts/{post}', [AdminController::class, 'updatePost'])->name('admin.posts.update');
-    Route::delete('/posts/{post}', [AdminController::class, 'destroyPost'])->name('admin.posts.destroy');
-    
-    // Destination management
-    Route::get('/destinations', [AdminController::class, 'destinations'])->name('admin.destinations');
+    Route::get('/users', [AdminController::class, 'users'])->name('users');
 });
 
 // Test route without middleware for debugging
@@ -79,10 +76,6 @@ Route::get('/admin-direct', function () {
     }
     return redirect()->route('dashboard')->with('error', 'You do not have permission to access the admin area.');
 })->middleware('auth')->name('admin.direct');
-
-// Public post routes
-Route::get('/blog', [PostController::class, 'index'])->name('posts.index');
-Route::get('/blog/{post:slug}', [PostController::class, 'show'])->name('posts.show');
 
 // Test database connection
 Route::get('/db-test', function () {
@@ -124,3 +117,6 @@ Route::get('trips/{trip}/thank-you', [App\Http\Controllers\TripController::class
 Route::get('trips/{trip}', [App\Http\Controllers\TripController::class, 'show'])
     ->name('trips.show')
     ->middleware(['auth']);
+
+
+

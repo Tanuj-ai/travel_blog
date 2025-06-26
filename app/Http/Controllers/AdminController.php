@@ -111,11 +111,20 @@ class AdminController extends Controller
     {
         $query = Post::query()->with('user');
         
+        // Only show posts for the current user unless they're an admin
+        // Check if user is admin by email (temporary solution)
+        $isAdmin = Auth::user()->email === 'yamansharmarakta@gmail.com';
+        if (!$isAdmin) {
+            $query->where('user_id', Auth::id());
+        }
+        
         // Search functionality
         if ($request->has('search')) {
             $search = $request->get('search');
-            $query->where('title', 'like', "%{$search}%")
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
                   ->orWhere('content', 'like', "%{$search}%");
+            });
         }
         
         // Filter by status
@@ -147,6 +156,7 @@ class AdminController extends Controller
             'excerpt' => 'nullable|string',
             'featured_image' => 'nullable|image|max:2048',
             'status' => 'required|in:draft,published',
+            'hashtags' => 'nullable|string|max:255',
         ]);
         
         $slug = Str::slug($validated['title']);
@@ -158,6 +168,7 @@ class AdminController extends Controller
             $uniqueSlug = $slug . '-' . $counter++;
         }
         
+        // Create the post with the current user's ID
         $post = new Post([
             'user_id' => Auth::id(),
             'title' => $validated['title'],
@@ -165,6 +176,7 @@ class AdminController extends Controller
             'excerpt' => $validated['excerpt'] ?? null,
             'content' => $validated['content'],
             'status' => $validated['status'],
+            'hashtags' => $validated['hashtags'] ?? null,
             'published_at' => $validated['status'] === 'published' ? now() : null,
         ]);
         
@@ -174,6 +186,13 @@ class AdminController extends Controller
         }
         
         $post->save();
+        
+        // Debug information
+        \Log::info('Post created', [
+            'user_id' => Auth::id(),
+            'post_id' => $post->id,
+            'title' => $post->title
+        ]);
         
         return redirect()->route('admin.posts')->with('success', 'Post created successfully');
     }
@@ -197,11 +216,13 @@ class AdminController extends Controller
             'excerpt' => 'nullable|string',
             'featured_image' => 'nullable|image|max:2048',
             'status' => 'required|in:draft,published',
+            'hashtags' => 'nullable|string|max:255',
         ]);
         
         $post->title = $validated['title'];
         $post->excerpt = $validated['excerpt'] ?? null;
         $post->content = $validated['content'];
+        $post->hashtags = $validated['hashtags'] ?? null;
         
         // Update published_at if status changes to published
         if ($validated['status'] === 'published' && $post->status !== 'published') {
@@ -248,6 +269,14 @@ class AdminController extends Controller
         return view('admin.destinations');
     }
 }
+
+
+
+
+
+
+
+
 
 
 

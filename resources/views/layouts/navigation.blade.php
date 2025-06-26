@@ -28,6 +28,13 @@
                     <x-nav-link :href="route('trips.index')" :active="request()->routeIs('trips.*')">
                         {{ __('Trip Planning') }}
                     </x-nav-link>
+                    
+                    @auth
+                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                    @endauth
+                    
                     <!-- Only show Admin link for the admin user -->
                     @if (Auth::check() && Auth::user()->email === 'yamansharmarakta@gmail.com')
                         <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin*')">
@@ -96,9 +103,30 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link :href="url('/')" :active="request()->is('/')">
                 {{ __('Home') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('destinations')" :active="request()->routeIs('destinations')">
+                {{ __('Destinations') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('contact')" :active="request()->routeIs('contact')">
+                {{ __('Contact') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('trips.index')" :active="request()->routeIs('trips.*')">
+                {{ __('Trip Planning') }}
+            </x-responsive-nav-link>
+            
+            @auth
+                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
+            @endauth
+            
+            @if (Auth::check() && Auth::user()->email === 'yamansharmarakta@gmail.com')
+                <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin*')">
+                    {{ __('Admin') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
@@ -141,6 +169,8 @@
         </div>
     </div>
 </nav>
+
+
 
 
 

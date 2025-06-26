@@ -60,6 +60,14 @@
                             <x-input-error :messages="$errors->get('status')" class="mt-2" />
                         </div>
                         
+                        <div class="mb-4">
+                            <x-input-label for="hashtags" :value="__('Hashtags')" />
+                            <x-text-input id="hashtags" name="hashtags" type="text" class="mt-1 block w-full" 
+                                         :value="old('hashtags', $post->hashtags)" placeholder="travel, adventure, bali" />
+                            <p class="mt-1 text-sm text-gray-500">Separate hashtags with commas</p>
+                            <x-input-error :messages="$errors->get('hashtags')" class="mt-2" />
+                        </div>
+                        
                         <div class="flex items-center justify-end mt-4">
                             <a href="{{ route('admin.posts') }}" class="text-gray-600 hover:text-gray-900 mr-4">
                                 Cancel
