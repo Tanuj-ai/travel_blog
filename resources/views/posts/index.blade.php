@@ -81,28 +81,7 @@
                 @foreach($posts as $index => $post)
                     @if($index > 0)
                         <article class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
-                            <div class="h-48 overflow-hidden bg-gray-200">
-                                @if($post->featured_image)
-                                    <a href="{{ route('posts.show', $post->slug) }}" class="block h-full">
-                                        <img 
-                                            src="{{ asset('storage/' . $post->featured_image) }}" 
-                                            alt="{{ $post->title }}" 
-                                            class="post-image w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                                            data-type="post"
-                                            data-post-id="{{ $post->id }}"
-                                        >
-                                    </a>
-                                @else
-                                    <a href="{{ route('posts.show', $post->slug) }}" class="block h-full flex items-center justify-center">
-                                        <div class="text-gray-400 text-center p-4">
-                                            <svg class="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                            </svg>
-                                            <p>No image</p>
-                                        </div>
-                                    </a>
-                                @endif
-                            </div>
+                            <!-- Image section removed -->
                             <div class="p-6">
                                 <div class="flex items-center text-sm text-gray-500 mb-3">
                                     <span>{{ $post->published_at ? $post->published_at->format('F d, Y') : $post->created_at->format('F d, Y') }}</span>
@@ -188,6 +167,7 @@
         </div>
     </div>
 </x-app-layout>
+
 
 
 
